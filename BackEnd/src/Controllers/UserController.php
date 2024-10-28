@@ -2,7 +2,7 @@
 namespace App\Controllers;
 
 use App\Config\Database;
-use App\Models\UserModel;
+use App\Models\User\UserModel;
 use App\Services\AuthService;
 use Exception;
 
@@ -74,4 +74,9 @@ class UserController {
             echo json_encode(['message' => 'Login falhou: erro:: '.$e]);
         }
     }
+
+    
+
+
+
 }

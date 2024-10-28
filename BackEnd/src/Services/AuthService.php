@@ -1,9 +1,13 @@
 <?php 
 namespace App\Services;
-
+use PDO;
 use Firebase\JWT\JWT;
 use Firebase\JWT\Key;
-use PDO;
+use Firebase\JWT\SignatureInvalidException;
+use Exception;
+
+
+
 use Dotenv\Dotenv;
 $dotenv = Dotenv::createImmutable(dirname(__FILE__,));
 $dotenv->load();
@@ -42,18 +46,31 @@ class AuthService {
     }
 
     public function validateToken($jwt) {
-        $decoded = JWT::decode($jwt, new Key($this->key, $this->alg));
+        try {
+            $decoded = JWT::decode($jwt, new Key($this->key, $this->alg));
 
-        // Verifica se o token está no banco de dados e não expirou
-        $stmt = $this->db->prepare("SELECT * FROM jwt_sessions WHERE jwt_token = :jwt_token AND expires_at > NOW()");
-        $stmt->execute([':jwt_token' => $jwt]);
+            // Verifica se o token está no banco de dados e não expirou
+            $stmt = $this->db->prepare("SELECT * FROM jwt_sessions WHERE jwt_token = :jwt_token AND expires_at > NOW()");
+            $stmt->execute([':jwt_token' => $jwt]);
 
-        return $stmt->fetch(PDO::FETCH_ASSOC) ? $decoded : null;
+            return $stmt->fetch(PDO::FETCH_ASSOC) ? $decoded : null;
+        } catch (SignatureInvalidException $e) {
+            http_response_code(401);
+            echo json_encode(['error' => 'Invalid token signature']);
+            exit;
+        } catch (Exception $e) {
+            http_response_code(401);
+            echo json_encode(['error' => 'Token validation failed: ' . $e->getMessage()]);
+            exit;
+        }
     }
-
     public function logout($jwt) {
         // Remove o token do banco de dados
         $stmt = $this->db->prepare("DELETE FROM jwt_sessions WHERE jwt_token = :jwt_token");
         $stmt->execute([':jwt_token' => $jwt]);
     }
+
 }
+
+   
+

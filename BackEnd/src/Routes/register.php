@@ -1,6 +1,6 @@
 <?php
 require_once '../../vendor/autoload.php';
-
+require_once '../Headers/headers.php';
 
 use App\Controllers\UserController;
 
@@ -10,6 +10,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $controller = new UserController();
     $controller->register($data['username'], $data['email'], $data['password']);
 } else {
-    http_response_code(405); // Método não permitido
+    http_response_code(405);
     echo json_encode(['message' => 'Method not allowed']);
 }
