@@ -1,0 +1,47 @@
+# Arquivos e diretórios do sistema
+/.idea/
+/vendor/
+/node_modules/
+
+# Arquivos de configuração sensíveis
+/.env
+/config.php
+
+# Arquivos temporários ou de cache
+/cache/
+/tmp/
+/logs/
+
+# Diretórios específicos que podem conter uploads ou dados sensíveis
+/uploads/
+/sessions/
+
+# Arquivos comuns que podem conter dados sensíveis
+*.sql
+*.sqlite
+
+# Arquivos de backup e temporários que podem ser gerados por editores
+*~
+*.bak
+*.swp
+*.tmp
+
+# Arquivos de log
+*.log
+*.error
+
+# Outros arquivos e diretórios que são gerados automaticamente e não precisam ser versionados
+/composer.lock
+/.phpunit.result.cache
+/phpunit.xml
+/vendor/
+/phpcs.xml
+/phpmd.xml
+
+# Arquivos específicos do projeto que não devem ser versionados
+/private.xml
+/secrets.json
+
+# Excluir arquivos de configuração de ambiente específico de IDE ou editor
+.vscode/
+/.vs/
