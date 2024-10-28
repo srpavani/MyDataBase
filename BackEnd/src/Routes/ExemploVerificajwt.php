@@ -29,7 +29,7 @@ function jwtMiddlewareCheck() {
 
 $user = jwtMiddlewareCheck();
 
-if ($_SERVER['REQUEST_METHOD'] === 'POST' && $user) {
+if ($_SERVER['REQUEST_METHOD'] === 'GET' && $user) {
     echo json_encode(['message' => 'Verificado com sucesso', 'user' => $user]);
 } else {
     http_response_code(405); 

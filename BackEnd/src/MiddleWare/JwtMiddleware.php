@@ -1,7 +1,8 @@
 <?php
 namespace App\Middleware;
-
 use App\Services\AuthService;
+ 
+
 
 class JwtMiddleware {
     private $authService;

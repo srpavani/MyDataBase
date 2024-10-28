@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Controllers;
 
 use App\Config\Database;
@@ -75,8 +76,49 @@ class UserController {
         }
     }
 
-    
+    public function logout() {
+        try {
+            $authService = new AuthService($this->db);
+            $jwt = getBearerToken();  // Obtém o token JWT do cabeçalho Authorization
 
+            if (!$jwt) {
+                http_response_code(400);
+                echo json_encode(['error' => 'Token not provided']);
+                return;
+            }
 
+            // Executa o logout (remove o token do banco de dados)
+            $authService->logout($jwt);
 
+            // Resposta de logout bem-sucedido
+            http_response_code(200);
+            echo json_encode(['message' => 'Logout successful']);
+        } catch (Exception $e) {
+            http_response_code(500);
+            echo json_encode(['error' => 'Logout failed: ' . $e->getMessage()]);
+        }
+    }
+}
+
+function getBearerToken() {
+    $header = null;
+
+    // Captura headers dependendo da configuração do servidor
+    if (isset($_SERVER['Authorization'])) {
+        $header = $_SERVER['Authorization'];
+    } elseif (isset($_SERVER['HTTP_AUTHORIZATION'])) { // Servidores como Apache às vezes prefixam com HTTP_
+        $header = $_SERVER['HTTP_AUTHORIZATION'];
+    } elseif (function_exists('apache_request_headers')) {
+        $headers = apache_request_headers();
+        if (isset($headers['Authorization'])) {
+            $header = $headers['Authorization'];
+        }
+    }
+
+    // Extrai o token se o header Authorization estiver presente
+    if ($header && preg_match('/Bearer\s(\S+)/', $header, $matches)) {
+        return $matches[1];
+    }
+
+    return null;
 }
