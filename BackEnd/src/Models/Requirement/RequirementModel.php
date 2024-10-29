@@ -1,5 +1,5 @@
 <?php
-namespace App\Models\RequirementModel;
+namespace App\Models\Requirement;
 
 use PDO;
 

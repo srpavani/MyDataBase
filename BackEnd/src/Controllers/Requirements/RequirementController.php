@@ -1,7 +1,7 @@
 <?php
-namespace App\Controllers;
+namespace App\Controllers\Requirements;
 
-use App\Models\RequirementModel\RequirementModel;
+use App\Models\Requirement\RequirementModel;
 use App\Services\AuthService;
 use App\Middleware\AuthMiddleware;
 use PDO;
@@ -25,7 +25,7 @@ class RequirementController {
     // Cria uma nova descrição de requisito
     public function createDescription($description, $jwt) {
         $this->setAuthenticatedUser($jwt); // Define o idUser a partir do JWT
-
+        
         if ($this->model->createDescription($description, $this->idUser)) {
             http_response_code(201);
             echo json_encode(['message' => 'Requirement created successfully']);
