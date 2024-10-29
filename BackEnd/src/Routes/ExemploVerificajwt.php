@@ -16,11 +16,10 @@ $jwtMiddleware = new JwtMiddleware($authService);
 
 // Função de Middleware: Verifica o JWT
 function jwtMiddlewareCheck() {
-    global $jwtMiddleware;
-    $request = $_SERVER;  // Aqui você poderia ajustar se precisar de outras informações na requisição
+    global $jwtMiddleware; // Aqui você poderia ajustar se precisar de outras informações na requisição
 
     // Executa o middleware e valida o token
-    $user = $jwtMiddleware->handle($request);
+    $user = $jwtMiddleware->handle();
 
     // Retorna o usuário decodificado se o token for válido
     return $user;

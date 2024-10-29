@@ -1,8 +1,8 @@
 <?php
 namespace App\Middleware;
-use App\Services\AuthService;
- 
 
+use App\Services\AuthService;
+use App\Helpers\TokenHelper;
 
 class JwtMiddleware {
     private $authService;
@@ -11,8 +11,8 @@ class JwtMiddleware {
         $this->authService = $authService;
     }
 
-    public function handle($request) {
-        $jwt = getBearerToken();
+    public function handle() {
+        $jwt = TokenHelper::getBearerToken(); // Obtém o token JWT com o helper
         
         if (!$jwt) {
             http_response_code(401);
@@ -27,29 +27,10 @@ class JwtMiddleware {
             exit;
         }
 
-        return $decoded;  // Continua o fluxo com o token decodificado
+        return $decoded; // Continua o fluxo com o token decodificado
     }
 }
 
-function getBearerToken() {
-    $header = null;
+   
 
-    // Captura headers dependendo da configuração do servidor
-    if (isset($_SERVER['Authorization'])) {
-        $header = $_SERVER['Authorization'];
-    } elseif (isset($_SERVER['HTTP_AUTHORIZATION'])) { // Servidores como Apache às vezes prefixam com HTTP_
-        $header = $_SERVER['HTTP_AUTHORIZATION'];
-    } elseif (function_exists('apache_request_headers')) {
-        $headers = apache_request_headers();
-        if (isset($headers['Authorization'])) {
-            $header = $headers['Authorization'];
-        }
-    }
 
-    // Extrai o token se o header Authorization estiver presente
-    if ($header && preg_match('/Bearer\s(\S+)/', $header, $matches)) {
-        return $matches[1];
-    }
-
-    return null;
-}

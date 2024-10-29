@@ -4,6 +4,7 @@ namespace App\Controllers;
 
 use App\Config\Database;
 use App\Models\User\UserModel;
+use App\Helpers\TokenHelper;
 use App\Services\AuthService;
 use Exception;
 
@@ -79,7 +80,7 @@ class UserController {
     public function logout() {
         try {
             $authService = new AuthService($this->db);
-            $jwt = getBearerToken();  // Obtém o token JWT do cabeçalho Authorization
+            $jwt = TokenHelper::getBearerToken();  // Obtém o token JWT do cabeçalho Authorization
 
             if (!$jwt) {
                 http_response_code(400);
@@ -100,25 +101,3 @@ class UserController {
     }
 }
 
-function getBearerToken() {
-    $header = null;
-
-    // Captura headers dependendo da configuração do servidor
-    if (isset($_SERVER['Authorization'])) {
-        $header = $_SERVER['Authorization'];
-    } elseif (isset($_SERVER['HTTP_AUTHORIZATION'])) { // Servidores como Apache às vezes prefixam com HTTP_
-        $header = $_SERVER['HTTP_AUTHORIZATION'];
-    } elseif (function_exists('apache_request_headers')) {
-        $headers = apache_request_headers();
-        if (isset($headers['Authorization'])) {
-            $header = $headers['Authorization'];
-        }
-    }
-
-    // Extrai o token se o header Authorization estiver presente
-    if ($header && preg_match('/Bearer\s(\S+)/', $header, $matches)) {
-        return $matches[1];
-    }
-
-    return null;
-}
