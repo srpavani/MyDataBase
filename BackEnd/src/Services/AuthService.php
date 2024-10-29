@@ -70,7 +70,41 @@ class AuthService {
         $stmt->execute([':jwt_token' => $jwt]);
     }
 
+    public function getUserById($jwt) {
+        $decoded = $this->validateToken($jwt);
+        if (!$decoded) {
+            return null; // Token inválido ou expirado
+        }
+
+        $userId = $decoded->sub; // ID do usuário a partir do token
+
+        // Consulta para buscar o usuário no banco de dados
+        $stmt = $this->db->prepare("SELECT * FROM users WHERE id = :user_id");
+        $stmt->execute([':user_id' => $userId]);
+
+        $user = $stmt->fetch(PDO::FETCH_ASSOC);
+
+        return $user ?: null; // Retorna os dados do usuário ou null se não for encontrado
+    }
+
+    public function getOnlyId($jwt) {
+        $decoded = $this->validateToken($jwt);
+        if (!$decoded) {
+            echo json_encode(['error' => 'TokenInvalido']);
+        }
+
+        $userId = $decoded->sub; // ID do usuário a partir do token
+        echo json_encode(['idUser' => "{$userId}"]);
+            exit;
+        
+    }
+
+
 }
+
+
+
+
 
    
 

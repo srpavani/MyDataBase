@@ -86,8 +86,15 @@ class UserModel {
                 $this->updateLastLogin($row['id']);
                 return true;
             }
+            
         }
         return false;
+    }
+
+    public function getUserByJWT($jwt){
+        //use App\Middleware\JwtMiddleware;
+//$jwtMiddleware = new JwtMiddleware($authService);
+
     }
 
 
