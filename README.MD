@@ -1,7 +1,7 @@
 # Nome do projeto
 
-![GitHub repo size](https://img.shields.io/github/repo-size/iuricode/README-template?style=for-the-badge)
-![GitHub language count](https://img.shields.io/github/languages/count/iuricode/README-template?style=for-the-badge)
+![GitHub repo size](https://img.shields.io/github/repo-size/srpavani/MyDataBase?style=for-the-badge)
+![GitHub language count](https://img.shields.io/github/languages/count/srpavani/MyDataBase?style=for-the-badge)
 
 
 > Este projeto permite a criação automática de instruções SQL a partir de descrições simples fornecidas pelo usuário, facilitando a montagem de bancos de dados em diversos sistemas, como Postgres, MySQL e Oracle. Ideal para desenvolvedores que buscam agilidade e precisão na modelagem de dados.
