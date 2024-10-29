@@ -3,7 +3,7 @@
 require_once '../../vendor/autoload.php';
 require_once '../Headers/headers.php';
 
-use App\Controllers\UserController;
+
 use App\Config\Database;
 use App\Services\AuthService;
 use App\Middleware\JwtMiddleware;
